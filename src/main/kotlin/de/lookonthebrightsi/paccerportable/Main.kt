@@ -13,6 +13,7 @@ const val USE_CACHE = true
 
 const val ARDUINO_PORTABLE = "https://downloads.arduino.cc/arduino-1.8.19-windows.zip"
 const val LIQUIDCRYSTAL_I2C = 3146658L
+const val ADAFRUIT_NEOPIXEL = 7136149L
 val LIBRARIES = listOf("PaccerInput", "PaccerCommon", "PaccerOutput") // except LiquidCrystal_I2C
 val SCRIPTS = listOf("PaccerMain")
 
@@ -116,6 +117,7 @@ fun main() {
         else if (it.key in SCRIPTS) it.value.download(buildDir, buildOutDir)
     }
     github.getRepositoryById(LIQUIDCRYSTAL_I2C).cacheOrDownload(cacheDir, librariesDir, rename = "LiquidCrystal_I2C")
+    github.getRepositoryById(ADAFRUIT_NEOPIXEL).cacheOrDownload(cacheDir, librariesDir)
 
     // Create dest zip file
     val finalZip = ZipFile(finalZipFile)

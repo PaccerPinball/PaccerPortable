@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "de.lookonthebrightsi"
-version = "1.0.0-alpha"
+version = "1.0.0-alpha.2"
 
 repositories {
     mavenCentral()
