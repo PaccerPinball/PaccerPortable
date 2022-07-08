@@ -14,8 +14,8 @@ const val USE_CACHE = true
 const val ARDUINO_PORTABLE = "https://downloads.arduino.cc/arduino-1.8.19-windows.zip"
 const val LIQUIDCRYSTAL_I2C = 3146658L
 const val ADAFRUIT_NEOPIXEL = 7136149L
-val LIBRARIES = listOf("PaccerInput", "PaccerCommon", "PaccerOutput") // except LiquidCrystal_I2C
-val SCRIPTS = listOf("PaccerMain")
+val LIBRARIES = listOf("PaccerInput", "PaccerCommon", "PaccerOutput", "PaccerSound")
+val SCRIPTS = listOf("PaccerMain", "lcd_test", "sound_test", "servo_test")
 
 fun File.child(name: String): File {
     if (!exists()) mkdir()
@@ -36,7 +36,14 @@ fun File.cacheOrDownload(urlString: String): File {
 
 fun GHRepository.cacheOrDownload(cache: File, destDir: File, rename: String? = null, ref: String? = null) {
     val name = rename ?: name
-    if (cache.child("$name.zip").exists()) println("Using cached zip for repository $name")
+    if (cache.child("$name.zip").exists()) {
+        println("Using cached zip for repository $name")
+        val zip = ZipFile(cache.child("$name.zip"))
+        // Extract zip to dest folder
+        zip.extractAll(destDir.path)
+        // Rename to proper name (without -main)
+        destDir.listFiles()!!.first { name in it.name || name in it.name.replace('-', '_') }.renameTo(destDir.child(name))
+    }
     else download(cache, destDir, rename, ref)
 }
 
